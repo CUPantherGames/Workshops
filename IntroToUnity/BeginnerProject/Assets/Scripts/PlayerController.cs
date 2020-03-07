@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     //<-------------------------------- Player -------------------------------->
-    public PlayerController Player1;                    //Instance of the Player Controller on the Player
+    public PlayerController Player;                    //Instance of the Player Controller on the Player
     private Rigidbody2D rb;                             //Instance of the Rigidbody Object on the Player
     private Animator anim;                              //Instance of the Animator on the Player
     [Space]
-    [Header("Movement Logic")]                   //Hierarchy Attribute for the Inspector
+    [Header("Movement Logic")]                          //Hierarchy Attribute for the Inspector
     //<-------------------------------- Player Movement -------------------------------->
-    private float mvSpeed = 5f;                         //Default Player Move Speed
+    private float mvSpeed = 20f;                         //Default Player Move Speed
     public float horizontalMove;
     private Vector3 velocity;                           //Vector in which the Player moves
+    bool facingRight = true;
     [Space]
 
-    [Header("Jump Logic")]                       //Hierarchy Attribute for the Inspector
+    [Header("Jump Logic")]                              //Hierarchy Attribute for the Inspector
     //<-------------------------------- Player Jump -------------------------------->
     public float jumpForce = 150f;                      //Default Player Jump Force
     private bool grounded;                              //Boolean to set Player True/False depending on if grounded
@@ -26,21 +27,28 @@ public class PlayerController : MonoBehaviour {
     void Awake() {
         rb = GetComponent<Rigidbody2D>();               //On Awake, grab the Rigidbody2D Component
         anim = GetComponent<Animator>();                //On Awake, grab the Animator Component
-        Player1 = GetComponent<PlayerController>();     //On Awake, grab the Player Controller
+        Player = GetComponent<PlayerController>();     //On Awake, grab the Player Controller
     }
 
     //<-------------------------------- Update -------------------------------->
     void Update() {
         //Player One Controls
         horizontalMove = Input.GetAxisRaw("Horizontal") * mvSpeed;
-        anim.SetFloat("Horizontal", horizontalMove);
+        anim.SetFloat("Horizontal", Mathf.Abs(horizontalMove));
 
-        if(grounded && Input.GetKeyDown("Space")) {
+        if(grounded && Input.GetKeyDown("space")) {
             grounded = false;
             rb.AddForce(new Vector2(rb.velocity.x, jumpForce));
 
         }
         anim.SetFloat("Speed", velocity.sqrMagnitude);
+
+        if(horizontalMove > 0 && !facingRight) {
+		      Flip();
+			  }
+			  else if(horizontalMove < 0 && facingRight) {
+		      Flip();
+			  }
     }
 
     //<-------------------------------- Fixed Update -------------------------------->
@@ -49,5 +57,14 @@ public class PlayerController : MonoBehaviour {
         rb.velocity = targetVelocity;
 
         grounded = Physics2D.Linecast(transform.position, groundCheck.position, groundLayer);
+        anim.SetBool("Grounded", grounded);
     }
+
+    //<-------------------------------- Flip -------------------------------->
+    void Flip() {
+  		facingRight = !facingRight;
+  		Vector3 theScale = transform.localScale;
+  		theScale.x *= -1;
+  		transform.localScale = theScale;
+	  }
 }
