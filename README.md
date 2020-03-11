@@ -6,15 +6,16 @@ This repository is for CU Panther Games Workshop Files. Please feel free to use 
 - For Chapman Coding Standards, refer to [Chapman Coding Standards](ChapmanCodingStandards.pdf)
 
 ## Workshop List
-1. [Intro to Unity #1 - Basics](IntroToUnity/BeginnerProject)
-	- Topics:
+- [Intro to Unity #1 - Basics](IntroToUnity/BeginnerProject)
+  - Topics:
     - Navigating Unity
     - GameObjects
     - Colliders
     - Sprite Renderer
     - Rigidbody and Physics
     - Scripting
-  - [Slides](Slides/PG-Intro to Unity#1.pptx)
+  - [Slides](Slides/PG-IntrotoUnity1.pptx)
+  - [Zip File](ZipFiles/IntroToUnity1.zip)
 
 
 ## License
